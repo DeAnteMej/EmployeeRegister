@@ -1,0 +1,107 @@
+﻿@model EmployeeRegister.Models.SearchViewModel
+
+@*@Html.Partial("_ShowList", @Model)*@
+
+@{
+    ViewBag.Title = "Employee Register";
+}
+
+<h2>@ViewBag.Title</h2>
+
+<br />
+
+@*samma namn som i HomeController*@
+@*<form method="get">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-2">
+                    <h5>FirstName: </h5>
+                </div>
+                <div class="col-xs-10">
+                    <h5><input type="search" name="searchFName" maxlength="30" value="@Model.SortFirstName" /></h5>
+                </div>
+
+                <div class="col-xs-2">
+                    <h5>LastName: </h5>
+                </div>
+                <div class="col-xs-3">
+                    <h5><input type="search" name="searchLName" maxlength="30" value="@Model.SortLastName" /></h5>
+                </div>
+                <div class="col-xs-5">
+                    <input type="submit" value="Search" />
+                </div>
+            </div>
+        </div>
+    </form>*@
+
+@using (Ajax.BeginForm(
+    new AjaxOptions
+    {
+        HttpMethod = "get",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "employeeList"
+    }))
+
+{
+    <h5>FirstName:<input type="search" name="searchFName" maxlength="30" value="@Model.SortFirstName" /></h5>
+    <h5>LastName:<input type="search" name="searchLName" maxlength="30" value="@Model.SortLastName" /></h5>
+    <input type="submit" value="Search" />
+}
+
+<br />
+<br />
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.ActionLink("FirstName", "Index", "Employees", new { searchFName = @Model.SortFirstName, searchLName = @Model.SortLastName, sortord = 0 }, null)
+        </th>
+        <th>
+            @Html.ActionLink("LastName", "Index", "Employees", new { searchFName = @Model.SortFirstName, searchLName = @Model.SortLastName, sortord = 1 }, null)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employees.Single().Salary)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employees.Single().Position)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Employees.Single().Department)
+        </th>
+        <th></th>
+    </tr>
+
+    <div id="employeeList">
+        @foreach (var item in Model.Employees)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salary)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Position)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Department)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    hidden
+                </td>
+            </tr>
+        }
+        </div>
+</table>
+
